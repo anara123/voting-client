@@ -1,6 +1,11 @@
+var webpack = require('webpack');
+var path = require('path');
+
 module.exports = {
 
 	entry: [
+		'webpack-dev-server/client?http://localhost:8080',
+		'webpack/hot/only-dev-server',
 		'./src/index.js'
 	],
 
@@ -8,8 +13,9 @@ module.exports = {
 		loaders: [
 			{
 				test: /\.jsx?$/,
-				exclude: 'node_modules',
-				loader: 'babel'
+				exclude: /node_modules/,
+				loader: 'react-hot!babel',
+				include: path.join(__dirname, 'src')
 			}
 		]
 	},
@@ -25,6 +31,11 @@ module.exports = {
 	},
 
 	devServer: {
-		contentBase: './dist'
-	}
+		contentBase: './dist',
+		hot: true
+	},
+
+	plugins: [
+		new webpack.HotModuleReplacementPlugin()
+	]
 };
